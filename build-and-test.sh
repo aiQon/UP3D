@@ -56,7 +56,7 @@ DATE=$(date +'%Y%m%d')
 DESTDIR="UP3D"
 OS=
 
-function rename_artefact
+rename_artefact()
 {
     if [ -f $1 ]; then
         FILENAME=$(basename $1)
@@ -67,11 +67,11 @@ function rename_artefact
     fi
 }
 
-function zip_artefacts
+zip_artefacts()
 {
-	if[ -d "artefacts" ]; then
-		zip "UP3D_${OS}_${DATE}_${GIT_BRANCH}_${GIT}.zip" "$DESTDIR/*"
-	fi
+    if[ -d "artefacts" ]; then
+        zip "UP3D_${OS}_${DATE}_${GIT_BRANCH}_${GIT}.zip" "$DESTDIR/*"
+    fi
 }
 
 mkdir -p $DESTDIR
@@ -82,16 +82,19 @@ if [[ "$OSTYPE" == "msys" ]]; then
     rename_artefact UP3DTOOLS/upload.exe
     rename_artefact UP3DTOOLS/upshell.exe
     rename_artefact UP3DTRANSCODE/up3dtranscode.exe
+    zip_artefacts
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     OS="MAC"
     rename_artefact UP3DTOOLS/upinfo
     rename_artefact UP3DTOOLS/upload
     rename_artefact UP3DTOOLS/upshell
     rename_artefact UP3DTRANSCODE/up3dtranscode
+    zip_artefacts
 elif [[ "$OSTYPE" == "linux-gnu" ]]; then
     OS="LIN"
     rename_artefact UP3DTOOLS/upinfo
     rename_artefact UP3DTOOLS/upload
     rename_artefact UP3DTOOLS/upshell
     rename_artefact UP3DTRANSCODE/up3dtranscode
+    zip_artefacts
 fi
