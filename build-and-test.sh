@@ -77,5 +77,5 @@ fi
 ls -R
 
 cd build
-zip -9 "UP3DTOOLS_${OS}_${DATE}_${GIT_BRANCH}_${GIT}.zip" "UP3DTOOLS"
+zip -r -9 "UP3DTOOLS_${OS}_${DATE}_${GIT_BRANCH}_${GIT}.zip" "UP3DTOOLS"
 cd ..
