@@ -69,7 +69,7 @@ rename_artefact()
 
 zip_artefacts()
 {
-    if[ -d "artefacts" ]; then
+    if [ -d "artefacts" ]; then
         zip "UP3D_${OS}_${DATE}_${GIT_BRANCH}_${GIT}.zip" "$DESTDIR/*"
     fi
 }
