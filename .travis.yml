@@ -1,7 +1,7 @@
 sudo: required
 language: c
 script:
-- sh build-and-test.sh
+- bash build-and-test.sh
 matrix:
   include:
   - os: linux
