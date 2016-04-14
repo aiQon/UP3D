@@ -53,48 +53,29 @@ cd ..
 GIT=$(git rev-parse --short HEAD)
 GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 DATE=$(date +'%Y%m%d')
-DESTDIR="UP3D"
-OS=
-
-rename_artefact()
-{
-    if [ -f $1 ]; then
-        FILENAME=$(basename $1)
-        cp $1 "$DESTDIR/$FILENAME"
-    else
-        echo "$1 was not present, dying"
-        exit -1
-    fi
-}
-
-zip_artefacts()
-{
-    if [ -d $DESTDIR ]; then
-        zip "UP3D_${OS}_${DATE}_${GIT_BRANCH}_${GIT}.zip" "$DESTDIR/*"
-    fi
-}
+DESTDIR="build/UP3DTOOLS"
+OS="LIN"
 
 mkdir -p $DESTDIR
 
 if [ "$OSTYPE" == "msys" ]; then
     OS="WIN"
-    rename_artefact UP3DTOOLS/upinfo.exe
-    rename_artefact UP3DTOOLS/upload.exe
-    rename_artefact UP3DTOOLS/upshell.exe
-    rename_artefact UP3DTRANSCODE/up3dtranscode.exe
-    zip_artefacts
-elif [ "$OSTYPE" == "darwin"* ]; then
-    OS="MAC"
-    rename_artefact UP3DTOOLS/upinfo
-    rename_artefact UP3DTOOLS/upload
-    rename_artefact UP3DTOOLS/upshell
-    rename_artefact UP3DTRANSCODE/up3dtranscode
-    zip_artefacts
-elif [ "$OSTYPE" == "linux-gnu" ]; then
-    OS="LIN"
-    rename_artefact UP3DTOOLS/upinfo
-    rename_artefact UP3DTOOLS/upload
-    rename_artefact UP3DTOOLS/upshell
-    rename_artefact UP3DTRANSCODE/up3dtranscode
-    zip_artefacts
+    cp UP3DTOOLS/upinfo.exe $DESTDIR
+    cp UP3DTOOLS/upload.exe $DESTDIR
+    cp UP3DTOOLS/upshell.exe $DESTDIR
+    cp UP3DTRANSCODE/up3dtranscode.exe $DESTDIR
+else 
+    if [ "$OSTYPE" == "darwin"* ]; then
+        OS="MAC"
+    fi
+    cp UP3DTOOLS/upinfo $DESTDIR
+    cp UP3DTOOLS/upload $DESTDIR
+    cp UP3DTOOLS/upshell $DESTDIR
+    cp UP3DTRANSCODE/up3dtranscode $DESTDIR
 fi
+
+ls -R
+
+cd build
+zip -9 "UP3DTOOLS_${OS}_${DATE}_${GIT_BRANCH}_${GIT}.zip" "UP3DTOOLS"
+cd ..
