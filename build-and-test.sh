@@ -3,6 +3,11 @@
 set -e
 set -x
 
+if [ -z $TRAVIS_OS_NAME ]; then
+	echo "This file is for automated builds only. Please use the respective make.sh files for local builds."
+	exit -1
+fi
+
 if [ "_$TRAVIS_OS_NAME" = "_osx" ]; then
 	#OSX DEPENDENCIES
 	brew update
@@ -44,4 +49,49 @@ cd UP3DTRANSCODE
 bash make.sh
 cd ..
 
-bash rename_artefacts.sh
+
+GIT=$(git rev-parse --short HEAD)
+GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+DATE=$(date +'%Y%m%d')
+DESTDIR="UP3D"
+OS=
+
+function rename_artefact
+{
+    if [ -f $1 ]; then
+        FILENAME=$(basename $1)
+        cp $1 "$DESTDIR/$FILENAME"
+    else
+        echo "$1 was not present, dying"
+        exit -1
+    fi
+}
+
+function zip_artefacts
+{
+	if[ -d "artefacts" ]; then
+		zip "UP3D_${OS}_${DATE}_${GIT_BRANCH}_${GIT}.zip" "$DESTDIR/*"
+	fi
+}
+
+mkdir -p $DESTDIR
+
+if [[ "$OSTYPE" == "msys" ]]; then
+    OS="WIN"
+    rename_artefact UP3DTOOLS/upinfo.exe
+    rename_artefact UP3DTOOLS/upload.exe
+    rename_artefact UP3DTOOLS/upshell.exe
+    rename_artefact UP3DTRANSCODE/up3dtranscode.exe
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    OS="MAC"
+    rename_artefact UP3DTOOLS/upinfo
+    rename_artefact UP3DTOOLS/upload
+    rename_artefact UP3DTOOLS/upshell
+    rename_artefact UP3DTRANSCODE/up3dtranscode
+elif [[ "$OSTYPE" == "linux-gnu" ]]; then
+    OS="LIN"
+    rename_artefact UP3DTOOLS/upinfo
+    rename_artefact UP3DTOOLS/upload
+    rename_artefact UP3DTOOLS/upshell
+    rename_artefact UP3DTRANSCODE/up3dtranscode
+fi
