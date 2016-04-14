@@ -76,21 +76,21 @@ zip_artefacts()
 
 mkdir -p $DESTDIR
 
-if [[ "$OSTYPE" == "msys" ]]; then
+if [ "$OSTYPE" == "msys" ]; then
     OS="WIN"
     rename_artefact UP3DTOOLS/upinfo.exe
     rename_artefact UP3DTOOLS/upload.exe
     rename_artefact UP3DTOOLS/upshell.exe
     rename_artefact UP3DTRANSCODE/up3dtranscode.exe
     zip_artefacts
-elif [[ "$OSTYPE" == "darwin"* ]]; then
+elif [ "$OSTYPE" == "darwin"* ]; then
     OS="MAC"
     rename_artefact UP3DTOOLS/upinfo
     rename_artefact UP3DTOOLS/upload
     rename_artefact UP3DTOOLS/upshell
     rename_artefact UP3DTRANSCODE/up3dtranscode
     zip_artefacts
-elif [[ "$OSTYPE" == "linux-gnu" ]]; then
+elif [ "$OSTYPE" == "linux-gnu" ]; then
     OS="LIN"
     rename_artefact UP3DTOOLS/upinfo
     rename_artefact UP3DTOOLS/upload
